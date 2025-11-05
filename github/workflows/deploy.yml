@@ -1,0 +1,39 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - main # يمكن تغييرها إلى الفرع الذي تستخدمه للنشر
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.5' # تأكد من أن الإصدار يطابق إصدار الخادم
+
+      - name: Install dependencies and Build
+        run: |
+          npm install
+          npm run build 
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 1. الانتقال إلى مسار الباك إند على الـ VPS
+            cd /var/www/my-full-stack-app/backend # 👈 عدّل هذا المسار
+
+            # 2. سحب آخر التغييرات
+            git pull origin main 
+
+            # 3. إعادة تشغيل تطبيق الباك إند في PM2
+            pm2 restart nest-backend # 👈 عدّل اسم تطبيقك في PM2
