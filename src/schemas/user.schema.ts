@@ -16,7 +16,7 @@ export class User {
   @Prop({ required: true, type: String })
   employeeId: string;
 
-  @Prop({  type: String })
+  @Prop({ type: String })
   email: string;
 
   @Prop({ required: true, type: String })
@@ -31,8 +31,8 @@ export class User {
   @Prop({ required: true, type: String, enum: userRoles })
   role: string;
 
-  @Prop({ required: true, type: String })
-  branch: string;
+  @Prop({ type: [Types.ObjectId], ref: 'Branch' })
+  branch: Types.ObjectId[];
 
   @Prop({ type: String, default: 'active', enum: userStatus })
   status: string;
@@ -60,7 +60,6 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
 
 // import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 // import { Address } from 'cluster';
@@ -127,4 +126,3 @@ export const UserSchema = SchemaFactory.createForClass(User);
 // }
 
 // export const UserSchema = SchemaFactory.createForClass(User);
-

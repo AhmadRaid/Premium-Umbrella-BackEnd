@@ -50,7 +50,7 @@ export class AuthService {
       employeeId,
       password: hashedPassword,
       fullName,
-      branch,
+      branch: new Types.ObjectId(branch),
       role,
     });
     await newUser.save();
