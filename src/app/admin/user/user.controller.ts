@@ -18,9 +18,10 @@ import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { generateUploadConfig } from 'src/config/upload.file.config';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/user')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

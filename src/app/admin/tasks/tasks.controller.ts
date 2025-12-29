@@ -18,10 +18,10 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskStatus } from 'src/schemas/task.schema';
 import { userRoles } from 'src/common/enum/userRoles.enum';
-import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/tasks')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 

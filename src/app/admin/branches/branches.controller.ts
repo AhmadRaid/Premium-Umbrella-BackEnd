@@ -15,8 +15,11 @@ import {
 import { BranchesService } from './branches.service';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/branches')
+@UseGuards(JwtAuthAdminGuard)
+
 export class BranchesController {
   constructor(private readonly branchService: BranchesService) {}
 
@@ -48,11 +51,11 @@ export class BranchesController {
     return this.branchService.update(id, updateBranchDto);
   }
 
-    @Delete(':branchId')
+  @Delete(':branchId')
   //  @Roles(UserRole.ADMIN)
-    async remove(@Param('branchId') id: string) {
-      return this.branchService.remove(id);
-    }
+  async remove(@Param('branchId') id: string) {
+    return this.branchService.remove(id);
+  }
 
   @Get('financial-report/:branchId')
   //  @Role(UserRole.ADMIN, UserRole.MANAGER)

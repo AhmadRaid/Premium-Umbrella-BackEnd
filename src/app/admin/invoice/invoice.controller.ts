@@ -18,10 +18,11 @@ import { ObjectId } from 'mongoose';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
 import { User } from 'src/schemas/user.schema';
 import { UpdateStatusDto } from './dto/updateStatus.dto';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 
 @Controller('admin/invoices')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) {}
 

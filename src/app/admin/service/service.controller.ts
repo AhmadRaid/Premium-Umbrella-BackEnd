@@ -14,11 +14,10 @@ import {
 } from '@nestjs/common';
 import { ServicesService } from './service.service';
 import { CreateServiceDto, UpdateServiceDto } from './dto/service.dto';
-import { ServiceDto } from '../client/dto/service.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/services')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 

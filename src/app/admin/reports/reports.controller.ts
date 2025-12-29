@@ -4,11 +4,10 @@ import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
 import { userRoles } from 'src/common/enum/userRoles.enum';
 import { CreateReportDto } from './dto/report.dto';
 import { AuthRequest } from 'src/interfaces/AuthRequest';
-
-
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/reports')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
   @Post()

@@ -17,9 +17,10 @@ import { OfferPrices } from 'src/schemas/offerPrice.schema';
 import { UpdateOfferPriceDto } from './dto/update-offer-price.dto';
 import { AddServiceToOfferDto } from './dto/add-service-to-offer.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/offer-prices')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class OfferPricesController {
   constructor(private readonly offerPricesService: OfferPricesService) {}
 

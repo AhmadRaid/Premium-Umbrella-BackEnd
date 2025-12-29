@@ -15,9 +15,10 @@ import { OrdersService } from './orders.service';
 import { AddGuaranteeDto } from './dto/create-guarantee.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AdminRoles } from 'src/common/enum/adminRoles.enum';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/orders')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 

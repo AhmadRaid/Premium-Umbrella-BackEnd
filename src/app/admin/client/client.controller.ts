@@ -21,9 +21,10 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { Client, ClientDocument } from 'src/schemas/client.schema';
 import { CheckUserExistsDto } from './dto/check-user-exist.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/clients')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
