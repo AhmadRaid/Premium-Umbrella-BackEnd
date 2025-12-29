@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AuthGuard } from '@nestjs/passport';
 import { I18nService } from 'nestjs-i18n';
 import { TokenService } from '../token/token.service';
-import { Model } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 
 
@@ -31,12 +31,16 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
     //  await this.validateTokenNotBlacklisted(token);
 
     const decoded = this.verifyToken(token);
-    console.log(decoded);
+
+    console.log('44444444444444444');
     
 
     const admin = await this.findAdminById(decoded._id);
 
-    request.admin = admin;
+        console.log('555555555555555');
+
+
+    request.user = admin;
 
     return true;
   }
@@ -65,14 +69,20 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
   }
 
   private async findAdminById(adminId: string): Promise<User> {
-        
-    const employee = await this.userModel.findOne({
-      _id: adminId,
+
+        console.log('qqqqqqqqqqqqqqqqqq',adminId);
+
+
+    const admin = await this.userModel.findOne({
+      _id: new Types.ObjectId(adminId),
       role: 'admin',
     });
-    if (!employee) {
+    if (!admin) {
       throw new UnauthorizedException('ليس لديك صلاحية الدخول لهذه الصفحة');
     }
-    return employee;
+
+    console.log('111111111111111',admin);
+    
+    return admin;
   }
 }

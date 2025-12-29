@@ -62,46 +62,59 @@ export class AuthEmployeeService {
   async login(loginAuthDto: LoginAuthDto) {
     const { employeeId, branch, password } = loginAuthDto;
 
-    console.log('1111111111',loginAuthDto);
-    
-
-    const employee = await this.userModel.findOne({
-      employeeId,
-      branch: new Types.ObjectId(branch),
-      role: 'employee',
+    // 1. البحث عن المستخدم بواسطة معرف الموظف فقط في البداية
+    const user = await this.userModel.findOne({
+      employeeId: employeeId,
       isDeleted: false,
     });
 
-    if (!employee) {
+    // التحقق من وجود المستخدم
+    if (!user) {
       throw new UnauthorizedException('الموظف غير مسجل');
     }
 
-    const isPasswordValid = await bcrypt.compare(password, employee.password);
+    const isAdmin = user.role === 'admin';
+
+    if (!isAdmin) {
+      if (!branch) {
+        throw new UnauthorizedException('يجب تحديد الفرع للموظفين');
+      }
+
+      const hasBranchAccess = user.branch.some(
+        (b) => b.toString() === branch.toString(),
+      );
+
+      if (!hasBranchAccess) {
+        throw new UnauthorizedException('الموظف غير مسجل في هذا الفرع');
+      }
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('كلمة المرور غير صحيحة');
     }
 
     const payload = {
-      employeeId: employee.employeeId,
-      _id: employee._id,
-      role: employee.role,
-      branch,
+      employeeId: user.employeeId,
+      _id: user._id,
+      role: user.role,
+      branch: isAdmin ? null : branch,
     };
 
     const { accessToken, refreshToken } = await this.generateTokens(payload);
 
     await this.tokenService.storeRefreshToken(
-      employee._id.toString(),
+      user._id.toString(),
       refreshToken,
     );
 
     // تحديث وقت آخر تسجيل دخول
     // user.lastLoginAt = new Date(); // تأكد من إضافة الحقل في السكيما إذا أردت تفعيله
-    await employee.save();
+    await user.save();
 
     return {
       accessToken,
-      employee: new UserResponseDto(employee),
+      user: new UserResponseDto(user),
     };
   }
 
