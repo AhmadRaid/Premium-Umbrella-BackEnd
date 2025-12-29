@@ -31,6 +31,8 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
     //  await this.validateTokenNotBlacklisted(token);
 
     const decoded = this.verifyToken(token);
+    console.log(decoded);
+    
 
     const admin = await this.findAdminById(decoded._id);
 
@@ -63,6 +65,9 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
   }
 
   private async findAdminById(userId: string): Promise<User> {
+
+    console.log('1111111',userId);
+    
     const employee = await this.userModel.findOne({
       _id: userId,
       role: 'admin',

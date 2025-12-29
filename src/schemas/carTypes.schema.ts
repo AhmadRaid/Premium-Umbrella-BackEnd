@@ -4,9 +4,9 @@ import { Document, Types } from 'mongoose';
 export type CarTypeDocument = CarType & Document;
 
 export enum CarSize {
-  SMALL = 'Small',
-  MEDIUM = 'Medium',
-  LARGE = 'Large'
+  SMALL = 'small',
+  MEDIUM = 'medium',
+  LARGE = 'large'
 }
 
 @Schema({
@@ -19,7 +19,7 @@ export class CarType {
     unique: true,
     trim: true
   })
-  name: string;
+  carModel: string;
 
   @Prop({ type: String, trim: true })
   description: string;

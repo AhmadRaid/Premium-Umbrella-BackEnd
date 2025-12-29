@@ -6,8 +6,6 @@ import { I18nService } from 'nestjs-i18n';
 import { ResponseModel } from './common/classes/response.model';
 
 import { AppImports } from './config/app-imports.config';
-import { TasksModule } from './app/tasks/tasks.module';
-import { BranchesModule } from './app/branches/branches.module';
 
 @Module({
   imports: AppImports,

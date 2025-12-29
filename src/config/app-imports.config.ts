@@ -6,18 +6,18 @@ import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseConfig } from './database.config';
 import { TranslationConfig } from './translation.config';
-import { AuthModule } from '../app/auth/auth.module';
-import { UserModule } from '../app/user/user.module';
-import { ClientModule } from 'src/app/client/client.module';
-import { OrdersModule } from 'src/app/orders/orders.module';
+import { AuthModule } from '../app/admin/auth/auth.module';
+import { UserModule } from '../app/admin/user/user.module';
+import { ClientModule } from 'src/app/admin/client/client.module';
+import { OrdersModule } from 'src/app/admin/orders/orders.module';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ServiceModule } from 'src/app/service/service.module';
-import { ReportsModule } from 'src/app/reports/reports.module';
-import { InvoiceModule } from 'src/app/invoice/invoice.module';
-import { TasksModule } from 'src/app/tasks/tasks.module';
-import { BranchesModule } from 'src/app/branches/branches.module';
-import { OfferPricesModule } from 'src/app/offerPrice/offerPrice.module';
-import { TypeCarsModule } from 'src/app/type-cars/type-cars.module';
+import { ServiceModule } from 'src/app/admin/service/service.module';
+import { ReportsModule } from 'src/app/admin/reports/reports.module';
+import { InvoiceModule } from 'src/app/admin/invoice/invoice.module';
+import { TasksModule } from 'src/app/admin/tasks/tasks.module';
+import { BranchesModule } from 'src/app/admin/branches/branches.module';
+import { OfferPricesModule } from 'src/app/admin/offerPrice/offerPrice.module';
+import { TypeCarsModule } from 'src/app/admin/type-cars/type-cars.module';
 
 // import { GoogleMapModule } from 'src/app/google-map/google-map.module';
 
@@ -48,6 +48,5 @@ export const AppImports = [
   BranchesModule,
   InvoiceModule,
   OfferPricesModule,
-  // OrdersModule
-  //PdfController
+   OrdersModule
 ];
