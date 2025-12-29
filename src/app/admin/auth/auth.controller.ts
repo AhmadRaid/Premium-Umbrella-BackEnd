@@ -16,19 +16,14 @@ import {
   HttpStatus,
   Res,
 } from '@nestjs/common';
-import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 import { resetPasswordDto } from './dto/forget-password.dto';
-import { SignUpAuthDto } from './dto/create-auth.dto';
 import { LoginAuthDto } from './dto/login.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
-import { NewPasswordDto } from './dto/new-password.dto';
-import { ForgetPasswordDto } from './dto/forgetPassword.dto';
-import { TokenService } from 'src/common/token/token.service';
 import { JwtOrDeviceRequest } from 'src/interfaces/JwtOrDeviceRequest';
-import { userRoles } from 'src/common/enum/userRoles.enum';
-import { AuthAdminService } from './auth.service';
 import { Response, Request } from 'express';
 import { AuthRequest } from 'src/interfaces/AuthRequest';
+import { AuthAdminService } from './auth.service';
+import { TokenService } from 'src/common/token/token.service';
 
 @Controller('admin/auth')
 export class AuthAdminController {

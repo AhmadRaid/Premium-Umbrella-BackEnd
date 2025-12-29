@@ -16,9 +16,9 @@ import { CarTypeService } from './type-cars.service';
 import { CreateCarTypeDto } from './dto/create-car-type.dto';
 import { PaginationDto } from 'src/common/pagination-dto/pagination.dto';
 import { CarSize } from 'src/schemas/carTypes.schema';
-import { JwtAuthAdminGuard } from 'src/common/guards/JwtAuthAdminGuard';
 import { AdminRoles } from 'src/common/enum/adminRoles.enum';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 
 @Controller('admin/car-types')
 @UseGuards(JwtAuthAdminGuard)
