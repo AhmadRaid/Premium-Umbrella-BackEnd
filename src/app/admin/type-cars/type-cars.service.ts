@@ -18,12 +18,16 @@ export class CarTypeService {
   ) {}
 
   async create(createCarTypeDto: CreateCarTypeDto): Promise<CarType> {
+    const { carModel } = createCarTypeDto
     try {
       const createdCarType = new this.carTypeModel({
-        ...createCarTypeDto,
+        carModel
       });
+      
       return await createdCarType.save();
     } catch (error) {
+      console.log('111111',error);
+
       // التحقق إذا كان الخطأ هو تكرار مفتاح (Duplicate Key Error)
       if (error.code === 11000) {
         throw new ConflictException(

@@ -64,12 +64,10 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
     }
   }
 
-  private async findAdminById(userId: string): Promise<User> {
-
-    console.log('1111111',userId);
-    
+  private async findAdminById(adminId: string): Promise<User> {
+        
     const employee = await this.userModel.findOne({
-      _id: userId,
+      _id: adminId,
       role: 'admin',
     });
     if (!employee) {

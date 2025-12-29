@@ -19,9 +19,7 @@ import { Verification } from 'src/schemas/verification.schema';
 import { NewPasswordDto } from './dto/new-password.dto';
 import { ForgetPasswordDto } from './dto/forgetPassword.dto';
 import { TokenService } from 'src/common/token/token.service';
-import { decode } from 'punycode';
 import { TokenBlacklist } from 'src/schemas/token-blacklist.schema';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { Response } from 'express';
 
 @Injectable()
@@ -32,46 +30,43 @@ export class AuthAdminService {
     private verificationModel: Model<Verification>,
     private jwtService: JwtService,
     private tokenService: TokenService,
-    @InjectModel(TokenBlacklist.name)
-    private tokenBlacklistModel: Model<TokenBlacklist>,
   ) {}
 
   async login(loginAuthDto: LoginAuthDto) {
-    const { employeeId, branch, password } = loginAuthDto;
+    const { employeeId, password } = loginAuthDto;
 
-    const user = await this.userModel.findOne({
+    const admin = await this.userModel.findOne({
       employeeId,
       role: 'admin',
       isDeleted: false,
     });
 
-    if (!user) {
-      throw new UnauthorizedException('الموظف غير مسجل');
+    if (!admin) {
+      throw new UnauthorizedException('الادمن غير مسجل');
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('كلمة المرور غير صحيحة');
     }
 
     const payload = {
-      employeeId: user.employeeId,
-      _id: user._id,
-      role: user.role,
+      _id: admin._id,
+      role: admin.role,
     };
 
     const { accessToken, refreshToken } = await this.generateTokens(payload);
 
     await this.tokenService.storeRefreshToken(
-      user._id.toString(),
+      admin._id.toString(),
       refreshToken,
     );
 
-    await user.save();
+    await admin.save();
 
     return {
       accessToken,
-      user: new UserResponseDto(user),
+      admin: new UserResponseDto(admin),
     };
   }
 

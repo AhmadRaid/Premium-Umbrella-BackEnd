@@ -16,15 +16,12 @@ import { CarTypeService } from './type-cars.service';
 import { CreateCarTypeDto } from './dto/create-car-type.dto';
 import { PaginationDto } from 'src/common/pagination-dto/pagination.dto';
 import { CarSize } from 'src/schemas/carTypes.schema';
-import { userRoles } from 'src/common/enum/userRoles.enum';
-import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
-import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
+import { JwtAuthAdminGuard } from 'src/common/guards/JwtAuthAdminGuard';
 import { AdminRoles } from 'src/common/enum/adminRoles.enum';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesGuard } from 'src/common/guards/RolesGuard';
 
 @Controller('admin/car-types')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthAdminGuard)
 export class CarTypeController {
   constructor(private readonly carTypeService: CarTypeService) {}
 

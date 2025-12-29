@@ -15,7 +15,7 @@ export enum CarSize {
 export class CarType {
   @Prop({
     type: String,
-    required: [true, 'Car type name is required'],
+    required: [true, 'Car Model name is required'],
     unique: true,
     trim: true
   })
@@ -57,10 +57,3 @@ export class CarType {
 }
 
 export const CarTypeSchema = SchemaFactory.createForClass(CarType);
-
-// Indexes
-CarTypeSchema.index({ name: 1 }, { unique: true });
-CarTypeSchema.index({ manufacturer: 1 });
-CarTypeSchema.index({ category: 1 });
-CarTypeSchema.index({ size: 1 });
-CarTypeSchema.index({ isActive: 1 });
