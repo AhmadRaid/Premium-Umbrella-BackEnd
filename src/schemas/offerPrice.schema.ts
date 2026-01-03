@@ -1,12 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { Client } from './client.schema';
 
 export type OfferPricesDocument = OfferPrices & Document;
 
 @Schema({ timestamps: true })
 export class OfferPrices {
   @Prop({ required: true, type: Types.ObjectId, ref: 'Client' })
-  clientId: Types.ObjectId;
+  client: Types.ObjectId; // يسمح بأن يكون كائن عميل أو مجرد ID
+
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  createdBy: Types.ObjectId; // يسمح بأن يكون كائن عميل أو مجرد ID
 
   @Prop({
     type: [
@@ -15,7 +19,7 @@ export class OfferPrices {
         serviceType: {
           type: String,
           required: true,
-         // enum: ['polish', 'protection', 'insulator', 'additions'],
+          // enum: ['polish', 'protection', 'insulator', 'additions'],
         },
         dealDetails: { type: String },
         protectionColor: { type: String },
@@ -26,12 +30,12 @@ export class OfferPrices {
         protectionSize: { type: String },
         protectionCoverage: {
           type: String,
-         // enum: ['full', 'half', 'quarter', 'edges', 'other'],
+          // enum: ['full', 'half', 'quarter', 'edges', 'other'],
         },
         insulatorType: { type: String, enum: ['ceramic', 'carbon', 'crystal'] },
         insulatorCoverage: {
           type: String,
-        //  enum: ['full', 'half', 'piece', 'shield', 'external'],
+          //  enum: ['full', 'half', 'piece', 'shield', 'external'],
         },
         polishType: {
           type: String,
@@ -58,7 +62,7 @@ export class OfferPrices {
         },
         washScope: {
           type: String,
-        //  enum: ['full', 'external_only', 'internal_only', 'engine'],
+          //  enum: ['full', 'external_only', 'internal_only', 'engine'],
         },
         servicePrice: { type: Number },
         serviceDate: { type: Date },
@@ -66,7 +70,7 @@ export class OfferPrices {
           type: {
             typeGuarantee: {
               type: String,
-            //  enum: ['2 سنوات', '3 سنوات', '5 سنوات', '8 سنوات', '10 سنوات'],
+              //  enum: ['2 سنوات', '3 سنوات', '5 سنوات', '8 سنوات', '10 سنوات'],
             },
             startDate: { type: Date },
             endDate: { type: Date },
@@ -74,7 +78,7 @@ export class OfferPrices {
             notes: { type: String, default: '' },
             status: {
               type: String,
-            //  enum: ['active', 'inactive'],
+              //  enum: ['active', 'inactive'],
               default: 'inactive',
             },
             accepted: { type: Boolean, default: false },

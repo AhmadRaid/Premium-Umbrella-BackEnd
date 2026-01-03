@@ -32,13 +32,7 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
 
     const decoded = this.verifyToken(token);
 
-    console.log('44444444444444444');
-    
-
     const admin = await this.findAdminById(decoded._id);
-
-        console.log('555555555555555');
-
 
     request.user = admin;
 
@@ -70,9 +64,6 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
 
   private async findAdminById(adminId: string): Promise<User> {
 
-        console.log('qqqqqqqqqqqqqqqqqq',adminId);
-
-
     const admin = await this.userModel.findOne({
       _id: new Types.ObjectId(adminId),
       role: 'admin',
@@ -81,8 +72,7 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
       throw new UnauthorizedException('ليس لديك صلاحية الدخول لهذه الصفحة');
     }
 
-    console.log('111111111111111',admin);
-    
+
     return admin;
   }
 }

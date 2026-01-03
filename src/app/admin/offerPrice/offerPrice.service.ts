@@ -13,22 +13,30 @@ export class OfferPricesService {
     private offerPriceModel: Model<OfferPricesDocument>,
   ) {}
 
-  async create(createOfferPriceDto: CreateOfferPriceDto): Promise<OfferPrices> {
-    const createdOffer = new this.offerPriceModel(createOfferPriceDto);
-    return createdOffer.save();
-  }
+ async create(createOfferPriceDto: CreateOfferPriceDto,userId:string): Promise<OfferPrices> {
+  const { clientId, ...restOfData } = createOfferPriceDto;
 
-  async findAll(): Promise<OfferPrices[]> {
-    return this.offerPriceModel
-      .find({ isDeleted: false })
-      .populate('clientId')
-      .exec();
-  }
+  const createdOffer = new this.offerPriceModel({
+    ...restOfData,
+    client: new Types.ObjectId(clientId), // التأكد من تحويل النص إلى ObjectId
+    createdBy: new Types.ObjectId(userId), // التأكد من تحويل النص إلى ObjectId
+  });
+
+  return createdOffer.save();
+}
+
+async findAll(): Promise<OfferPrices[]> {
+  return this.offerPriceModel
+    .find({ isDeleted: false })
+    .populate('client','_id clientNumber phone clientType firstName secondName thirdName lastName')
+    .populate('createdBy','_id fullName employeeId')
+    .exec();
+}
 
   async findOne(id: string): Promise<OfferPrices> {
     const offer = await this.offerPriceModel
       .findOne({ _id: id, isDeleted: false })
-      .populate('clientId')
+      .populate('client')
       .exec();
 
     if (!offer) {
@@ -44,7 +52,7 @@ export class OfferPricesService {
         clientId: new Types.ObjectId(clientId), 
         isDeleted: false 
       })
-      .populate('clientId')
+      .populate('client')
       .exec();
   }
 
@@ -58,7 +66,7 @@ export class OfferPricesService {
         updateOfferPriceDto,
         { new: true },
       )
-      .populate('clientId')
+      .populate('client')
       .exec();
 
     if (!updatedOffer) {
@@ -152,7 +160,7 @@ export class OfferPricesService {
         { $pull: { services: { _id: new Types.ObjectId(serviceId) } } },
         { new: true }
       )
-      .populate('clientId')
+      .populate('client')
       .exec();
 
     if (!updatedOffer) {
