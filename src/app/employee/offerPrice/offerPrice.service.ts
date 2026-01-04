@@ -11,10 +11,10 @@ export class OfferPricesEmployeeService {
   constructor(
     @InjectModel(OfferPrices.name)
     private offerPriceModel: Model<OfferPricesDocument>,
-  ) {}
+  ) { }
 
-  async create(createOfferPriceDto: any,userId:string): Promise<OfferPrices> {
-    const data ={
+  async create(createOfferPriceDto: any, userId: string): Promise<OfferPrices> {
+    const data = {
       ...createOfferPriceDto,
       client: new Types.ObjectId(createOfferPriceDto.clientId),
       createdBy: new Types.ObjectId(createOfferPriceDto.userId),
@@ -26,14 +26,14 @@ export class OfferPricesEmployeeService {
   async findAll(): Promise<OfferPrices[]> {
     return this.offerPriceModel
       .find({ isDeleted: false })
-      .populate('clientId')
+      .populate('client', '_id firstName secondName thirdName lastName clientNumber')
       .exec();
   }
 
   async findOne(id: string): Promise<OfferPrices> {
     const offer = await this.offerPriceModel
       .findOne({ _id: id, isDeleted: false })
-      .populate('clientId')
+      .populate('client', '_id firstName secondName thirdName lastName clientNumber')
       .exec();
 
     if (!offer) {
@@ -45,11 +45,11 @@ export class OfferPricesEmployeeService {
 
   async findByClientId(clientId: string): Promise<OfferPrices[]> {
     return this.offerPriceModel
-      .find({ 
-        clientId: new Types.ObjectId(clientId), 
-        isDeleted: false 
+      .find({
+        clientId: new Types.ObjectId(clientId),
+        isDeleted: false
       })
-      .populate('clientId')
+      .populate('client', '_id firstName secondName thirdName lastName clientNumber')
       .exec();
   }
 
@@ -63,7 +63,7 @@ export class OfferPricesEmployeeService {
         updateOfferPriceDto,
         { new: true },
       )
-      .populate('clientId')
+      .populate('client', '_id firstName secondName thirdName lastName clientNumber')
       .exec();
 
     if (!updatedOffer) {
@@ -120,10 +120,10 @@ export class OfferPricesEmployeeService {
 
     const updatedOffer = await this.offerPriceModel
       .findOneAndUpdate(
-        { 
-          _id: offerId, 
+        {
+          _id: offerId,
           isDeleted: false,
-          'services._id': serviceObjectId 
+          'services._id': serviceObjectId
         },
         { $set: updateQuery },
         { new: true }

@@ -27,8 +27,6 @@ export class OfferPricesEmployeeController {
 
   @Post()
   async create(@Body() createOfferPriceDto: any,@Req() req: AuthRequest) {
-    console.log('111111111111111111');
-    
     return this.offerPricesService.create(createOfferPriceDto,req.user._id);
   }
 

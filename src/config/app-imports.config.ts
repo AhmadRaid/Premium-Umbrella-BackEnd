@@ -16,8 +16,8 @@ import { ReportsModule } from 'src/app/admin/reports/reports.module';
 import { InvoiceModule } from 'src/app/admin/invoice/invoice.module';
 import { TasksModule } from 'src/app/admin/tasks/tasks.module';
 import { BranchesModule } from 'src/app/admin/branches/branches.module';
-import { OfferPricesModule } from 'src/app/admin/offerPrice/offerPrice.module';
 import { TypeCarsModule } from 'src/app/admin/type-cars/type-cars.module';
+import { OfferPricesModule } from 'src/app/admin/offerPrice/offerPrice.module';
 
 // import { GoogleMapModule } from 'src/app/google-map/google-map.module';
 
