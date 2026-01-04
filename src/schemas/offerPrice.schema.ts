@@ -32,8 +32,12 @@ export class OfferPrices {
           type: String,
           // enum: ['full', 'half', 'quarter', 'edges', 'other'],
         },
-        insulatorType: { type: String, enum: ['ceramic', 'carbon', 'crystal'] },
+        insulatorType: { type: String },
         insulatorCoverage: {
+          type: String,
+          //  enum: ['full', 'half', 'piece', 'shield', 'external'],
+        },
+           insulatorPercentage: {
           type: String,
           //  enum: ['full', 'half', 'piece', 'shield', 'external'],
         },
@@ -48,7 +52,7 @@ export class OfferPrices {
           //   'water_polish',
           // ],
         },
-        polishSubType: { type: String, enum: ['1', '2', '3'] },
+        polishSubType: { type: String },
         additionType: {
           type: String,
           // enum: [
@@ -96,6 +100,7 @@ export class OfferPrices {
     protectionSize?: string;
     protectionCoverage?: string;
     insulatorType?: string;
+    insulatorPercentage?: string;
     insulatorCoverage?: string;
     polishType?: string;
     polishSubType?: string;

@@ -13,8 +13,13 @@ export class OfferPricesEmployeeService {
     private offerPriceModel: Model<OfferPricesDocument>,
   ) {}
 
-  async create(createOfferPriceDto: CreateOfferPriceDto): Promise<OfferPrices> {
-    const createdOffer = new this.offerPriceModel(createOfferPriceDto);
+  async create(createOfferPriceDto: any,userId:string): Promise<OfferPrices> {
+    const data ={
+      ...createOfferPriceDto,
+      client: new Types.ObjectId(createOfferPriceDto.clientId),
+      createdBy: new Types.ObjectId(createOfferPriceDto.userId),
+    };
+    const createdOffer = new this.offerPriceModel(data);
     return createdOffer.save();
   }
 

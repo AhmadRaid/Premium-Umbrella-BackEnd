@@ -8,8 +8,8 @@ export class CreateOfferPriceDto {
   clientId: string;
 
   @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => AddServiceToOfferDto)
-  services?: AddServiceToOfferDto[];
+//  @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => AddServiceToOfferDto)
+  services: any[];
 }

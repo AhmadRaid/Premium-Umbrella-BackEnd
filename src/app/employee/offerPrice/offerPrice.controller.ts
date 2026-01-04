@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpCode,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { OfferPricesEmployeeService } from './offerPrice.service';
 import { CreateOfferPriceDto } from './dto/create-offer-price.dto';
@@ -16,15 +17,19 @@ import { OfferPrices } from 'src/schemas/offerPrice.schema';
 import { UpdateOfferPriceDto } from './dto/update-offer-price.dto';
 import { AddServiceToOfferDto } from './dto/add-service-to-offer.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { AuthCompositeGuard } from 'src/common/guards/AuthCompositeGuard';
+import { AuthRequest } from 'src/interfaces/AuthRequest';
 
-@Controller('admin/offer-prices')
-@UseGuards(JwtAuthGuard)
+@Controller('offer-prices')
+@UseGuards(AuthCompositeGuard)
 export class OfferPricesEmployeeController {
   constructor(private readonly offerPricesService: OfferPricesEmployeeService) {}
 
   @Post()
-  async create(@Body() createOfferPriceDto: CreateOfferPriceDto): Promise<OfferPrices> {
-    return this.offerPricesService.create(createOfferPriceDto);
+  async create(@Body() createOfferPriceDto: any,@Req() req: AuthRequest) {
+    console.log('111111111111111111');
+    
+    return this.offerPricesService.create(createOfferPriceDto,req.user._id);
   }
 
   @Get()
