@@ -2,7 +2,6 @@ import {
   Controller,
   Post,
   Get,
-  Put,
   Delete,
   Body,
   Param,
@@ -20,10 +19,10 @@ import { createClientAndOrderDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Client, ClientDocument } from 'src/schemas/client.schema';
 import { CheckUserExistsDto } from './dto/check-user-exist.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
+import { AuthCompositeGuard } from 'src/common/guards/AuthCompositeGuard';
 
 @Controller('clients')
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthCompositeGuard)
 export class ClientEmployeeController {
   constructor(private readonly clientService: ClientEmployeeService) {}
 
