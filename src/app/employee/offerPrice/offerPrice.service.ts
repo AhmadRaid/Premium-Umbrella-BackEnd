@@ -20,40 +20,48 @@ export class OfferPricesEmployeeService {
   ) { }
 
   async create(createOfferPriceDto: any, userId: string): Promise<OfferPrices> {
+    const validDays = typeof createOfferPriceDto.validDurationDays === 'number' ? createOfferPriceDto.validDurationDays : 5; // default 5 days validity
     const data = {
       ...createOfferPriceDto,
       client: new Types.ObjectId(createOfferPriceDto.clientId),
       createdBy: new Types.ObjectId(createOfferPriceDto.userId),
+      validUntil: new Date(Date.now() + validDays * 24 * 60 * 60 * 1000),
+      isConverted: false,
     };
     const createdOffer = new this.offerPriceModel(data);
     return createdOffer.save();
   }
 
   async findAll(): Promise<OfferPrices[]> {
+    const now = new Date();
     return this.offerPriceModel
-      .find({ isDeleted: false })
+      .find({ isDeleted: false, isConverted: false, validUntil: { $gte: now } })
       .populate('client', '_id firstName secondName thirdName lastName clientNumber phone')
       .exec();
   }
 
   async findOne(id: string): Promise<OfferPrices> {
+    const now = new Date();
     const offer = await this.offerPriceModel
-      .findOne({ _id: id, isDeleted: false })
+      .findOne({ _id: id, isDeleted: false, isConverted: false, validUntil: { $gte: now } })
       .populate('client', '_id firstName secondName thirdName lastName clientNumber')
       .exec();
 
     if (!offer) {
-      throw new NotFoundException(`Offer price with ID ${id} not found`);
+      throw new NotFoundException(`Offer price with ID ${id} not found or expired/converted`);
     }
 
     return offer;
   }
 
   async findByClientId(clientId: string): Promise<OfferPrices[]> {
+    const now = new Date();
     return this.offerPriceModel
       .find({
-        clientId: new Types.ObjectId(clientId),
-        isDeleted: false
+        client: new Types.ObjectId(clientId),
+        isDeleted: false,
+        isConverted: false,
+        validUntil: { $gte: now },
       })
       .populate('client', '_id firstName secondName thirdName lastName clientNumber')
       .exec();
@@ -74,6 +82,10 @@ export class OfferPricesEmployeeService {
 
     if (!updatedOffer) {
       throw new NotFoundException(`Offer price with ID ${id} not found`);
+    }
+
+    if ((updatedOffer as any).isConverted) {
+      throw new BadRequestException('Cannot update an offer that has been converted to an order');
     }
 
     return updatedOffer;
@@ -180,14 +192,25 @@ export class OfferPricesEmployeeService {
 
   // Convert an offer price into an official Order and create a linked WorkOrder
   async convertOfferToOrder(offerId: string, dto: ConvertOfferToOrderDto, userId?: string) {
+    console.log('11111111111111111');
     
     const offer = await this.offerPriceModel.findOne({ _id: offerId, isDeleted: false }).exec();
     if (!offer) throw new NotFoundException(`Offer price with ID ${offerId} not found`);
+
+    // Check converted or expired
+    const now = new Date();
+    if ((offer as any).isConverted) {
+      throw new BadRequestException('Offer price has already been converted to an order');
+    }
+    if (offer.validUntil && offer.validUntil < now) {
+      throw new BadRequestException('Offer price has expired and cannot be converted');
+    }
 
     // Validate required carModel
     if (!dto.carModel || dto.carModel.trim() === '') {
       throw new BadRequestException('Car Model name is required');
     }
+    console.log('222222222222222');
 
     // Normalize and validate carSize (accept case-insensitive 'small','medium','large')
     let normalizedCarSize: string | undefined = undefined;
@@ -232,6 +255,8 @@ export class OfferPricesEmployeeService {
       assignedToEmployee3: dto.assignedToEmployee3,
     };
 
+        console.log('333333333333333',offer.client.toString());
+
     // Create order via Orders service
     const orderCreated = await this.ordersService.createOrderForExistingClient(offer.client.toString(), createOrderDto as any);
 
@@ -245,9 +270,11 @@ export class OfferPricesEmployeeService {
       notes: dto.notes || '',
     } as any);
 
-    // update offer with link to created order
+    // update offer with link to created order and mark as converted
     offer.orderId = orderCreated.order._id as Types.ObjectId;
+    offer.isConverted = true;
     await offer.save();
 
+    return { order: orderCreated, workOrder };
   }
 }

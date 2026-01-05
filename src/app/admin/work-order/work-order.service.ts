@@ -66,17 +66,11 @@ export class WorkOrderService {
                 },
             },
 
-            // Final projection (inclusion-only)
+            // Final projection (include full client object)
             {
                 $project: {
                     order: 1,
-                    'client._id': 1,
-                    'client.firstName': 1,
-                    'client.secondName': 1,
-                    'client.thirdName': 1,
-                    'client.lastName': 1,
-                    'client.clientNumber': 1,
-                    'client.phone': 1,
+                    client: 1,
                     assignedEmployees: 1,
                     status: 1,
                     statusHistory: 1,

@@ -33,7 +33,7 @@ export class OfferPrices {
   
     @Prop({ type: String, required: true })
     carSize: string;
-    
+
   @Prop({
     type: [
       {
@@ -143,6 +143,12 @@ export class OfferPrices {
 
   @Prop({ type: Boolean, default: false })
   isDeleted: boolean;
+
+  @Prop({ type: Date })
+  validUntil?: Date;
+
+  @Prop({ type: Boolean, default: false })
+  isConverted?: boolean;
 
   @Prop({ type: Types.ObjectId, ref: 'Orders' })
   orderId?: Types.ObjectId;
