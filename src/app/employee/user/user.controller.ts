@@ -18,15 +18,21 @@ import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { generateUploadConfig } from 'src/config/upload.file.config';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { AuthCompositeGuard } from 'src/common/guards/AuthCompositeGuard';
 
 @Controller('user')
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthCompositeGuard)
 export class UserEmployeeController {
   constructor(private readonly userService: UserEmployeeService) {}
 
   @Get('profile')
   async findOne(@Req() req: AuthRequest) {
     return this.userService.findOne(req.user._id);
+  }
+
+  @Get('get-employees')
+  async getAllUser(@Req() req: AuthRequest) {
+    return this.userService.getAllUsers();
   }
 
   // @UseInterceptors(FileInterceptor('image', generateUploadConfig('users')))

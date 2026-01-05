@@ -78,6 +78,8 @@ export class UserEmployeeService {
   // }
 
   async getAllUsers() {
-    return this.userModel.find({ role: 'user' }).exec();
+    return this.userModel.find({ role: 'employee',isDeleted: false })
+    .select('fullName employeeId branch phoneNumber image')
+    .exec();
   }
 }
