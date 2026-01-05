@@ -121,6 +121,9 @@ export class OfferPrices {
 
   @Prop({ type: Boolean, default: false })
   isDeleted: boolean;
+
+  @Prop({ type: Types.ObjectId, ref: 'Orders' })
+  orderId?: Types.ObjectId;
 }
 
 export const OfferPriceSchema = SchemaFactory.createForClass(OfferPrices);

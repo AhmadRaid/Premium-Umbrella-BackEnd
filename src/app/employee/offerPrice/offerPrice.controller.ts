@@ -19,15 +19,16 @@ import { AddServiceToOfferDto } from './dto/add-service-to-offer.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwtAuthGuard';
 import { AuthCompositeGuard } from 'src/common/guards/AuthCompositeGuard';
 import { AuthRequest } from 'src/interfaces/AuthRequest';
+import { ConvertOfferToOrderDto } from './dto/convert-offer-to-order.dto';
 
 @Controller('offer-prices')
 @UseGuards(AuthCompositeGuard)
 export class OfferPricesEmployeeController {
-  constructor(private readonly offerPricesService: OfferPricesEmployeeService) {}
+  constructor(private readonly offerPricesService: OfferPricesEmployeeService) { }
 
   @Post()
-  async create(@Body() createOfferPriceDto: any,@Req() req: AuthRequest) {
-    return this.offerPricesService.create(createOfferPriceDto,req.user._id);
+  async create(@Body() createOfferPriceDto: any, @Req() req: AuthRequest) {
+    return this.offerPricesService.create(createOfferPriceDto, req.user._id);
   }
 
   @Get()
@@ -35,42 +36,52 @@ export class OfferPricesEmployeeController {
     return this.offerPricesService.findAll();
   }
 
+  @Post(':offerPriceId/convert-to-order')
+  async convertToOrder(
+    @Param('offerPriceId') offerPriceId: string,
+    @Body() dto: ConvertOfferToOrderDto,
+    @Req() req: AuthRequest,
+  ) {
+    return this.offerPricesService.convertOfferToOrder(offerPriceId, dto, req.user._id);
+  }
+
   @Get('client/:clientId')
   async findByClientId(@Param('clientId') clientId: string): Promise<OfferPrices[]> {
     return this.offerPricesService.findByClientId(clientId);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<OfferPrices> {
-    return this.offerPricesService.findOne(id);
+  @Get(':offerPriceId')
+  async findOne(@Param('offerPriceId') offerPriceId: string): Promise<OfferPrices> {
+    return this.offerPricesService.findOne(offerPriceId);
   }
 
-  @Get(':id/total-price')
-  async calculateTotalPrice(@Param('id') id: string): Promise<{ totalPrice: number }> {
-    const totalPrice = await this.offerPricesService.calculateTotalPrice(id);
+  @Get(':offerPriceId/total-price')
+  async calculateTotalPrice(@Param('offerPriceId') offerPriceId: string): Promise<{ totalPrice: number }> {
+    const totalPrice = await this.offerPricesService.calculateTotalPrice(offerPriceId);
     return { totalPrice };
   }
 
-  @Put(':id')
+
+  @Put(':offerPriceId')
   async update(
-    @Param('id') id: string,
+    @Param('offerPriceId') offerPriceId: string,
     @Body() updateOfferPriceDto: UpdateOfferPriceDto,
   ): Promise<OfferPrices> {
-    return this.offerPricesService.update(id, updateOfferPriceDto);
+    return this.offerPricesService.update(offerPriceId, updateOfferPriceDto);
   }
 
-  @Delete(':id')
+  @Delete(':offerPriceId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string): Promise<void> {
-    await this.offerPricesService.remove(id);
+  async remove(@Param('offerPriceId') offerPriceId: string): Promise<void> {
+    await this.offerPricesService.remove(offerPriceId);
   }
 
-  @Post(':id/services')
+  @Post(':offerPriceId/services')
   async addService(
-    @Param('id') id: string,
+    @Param('offerPriceId') offerPriceId: string,
     @Body() addServiceDto: AddServiceToOfferDto,
   ): Promise<OfferPrices> {
-    return this.offerPricesService.addServiceToOffer(id, addServiceDto);
+    return this.offerPricesService.addServiceToOffer(offerPriceId, addServiceDto);
   }
 
   @Put(':offerId/services/:serviceId')

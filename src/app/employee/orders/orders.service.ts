@@ -111,7 +111,6 @@ export class OrdersEmployeeService {
   }
 
   private async findClientById(clientId: string): Promise<ClientDocument> {
-    console.log('1111111111111', clientId);
 
     const client = await this.clientModel.findById(clientId);
     if (!client) {
@@ -201,19 +200,22 @@ export class OrdersEmployeeService {
     if (!services) return [];
 
     return services.map((service) => {
+      const guarantee = service?.guarantee;
       const preparedService: any = {
         serviceType: service.serviceType,
         dealDetails: service.dealDetails,
         servicePrice: service.servicePrice,
-        guarantee: {
-          typeGuarantee: service.guarantee.typeGuarantee,
-          startDate: new Date(service.guarantee.startDate),
-          endDate: new Date(service.guarantee.endDate),
-          terms: service.guarantee.terms,
-          notes: service.guarantee.notes,
-          status: 'inactive',
-          accepted: false,
-        },
+        guarantee: guarantee
+          ? {
+              typeGuarantee: guarantee.typeGuarantee,
+              startDate: guarantee.startDate ? new Date(guarantee.startDate) : undefined,
+              endDate: guarantee.endDate ? new Date(guarantee.endDate) : undefined,
+              terms: guarantee.terms || '',
+              notes: guarantee.notes || '',
+              status: (guarantee as any)?.['status'] ?? 'inactive',
+              accepted: typeof (guarantee as any)?.['accepted'] === 'boolean' ? (guarantee as any)['accepted'] : false,
+            }
+          : undefined,
       };
 
       // إضافة حقول خاصة بالخدمة

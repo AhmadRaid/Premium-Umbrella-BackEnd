@@ -107,10 +107,10 @@ export class Orders {
           type: {
             typeGuarantee: {
               type: String,
-              required: true,
+            //  required: true,
             },
-            startDate: { type: Date, required: true },
-            endDate: { type: Date, required: true },
+            startDate: { type: Date,  },
+            endDate: { type: Date, },
             terms: { type: String },
             notes: { type: String, default: '' },
             sendApproveForAdmin: { type: Boolean, default: false },
