@@ -31,8 +31,8 @@ export class UserEmployeeController {
   }
 
   @Get('get-employees')
-  async getAllUser(@Req() req: AuthRequest) {
-    return this.userService.getAllUsers();
+  async getAllUser() {
+    return this.userService.getAllEmployees();
   }
 
   // @UseInterceptors(FileInterceptor('image', generateUploadConfig('users')))

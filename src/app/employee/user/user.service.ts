@@ -77,7 +77,7 @@ export class UserEmployeeService {
   //   }
   // }
 
-  async getAllUsers() {
+  async getAllEmployees() {
     return this.userModel.find({ role: 'employee',isDeleted: false })
     .select('fullName employeeId branch phoneNumber image')
     .exec();

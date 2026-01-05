@@ -12,6 +12,28 @@ export class OfferPrices {
   @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
   createdBy: Types.ObjectId; // يسمح بأن يكون كائن عميل أو مجرد ID
 
+  @Prop({ required: true, type: String })
+    carModel: string;
+  
+    @Prop({ required: true, type: String })
+    carManufacturer: string;
+  
+    @Prop({ required: true, type: String })
+    carColor: string;
+  
+    @Prop({
+      type: String,
+      required: true,
+      validate: {
+        validator: (plate: string) => plate.length === 8 || plate.length === 7,
+        message: 'Car plate must have exactly 8 or 7 characters',
+      },
+    })
+    carPlateNumber: string[];
+  
+    @Prop({ type: String, required: true })
+    carSize: string;
+    
   @Prop({
     type: [
       {
