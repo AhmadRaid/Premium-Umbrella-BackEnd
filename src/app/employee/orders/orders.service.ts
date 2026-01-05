@@ -123,16 +123,22 @@ export class OrdersEmployeeService {
     client: ClientDocument,
     createOrderDto: any,
   ): Promise<OrdersDocument> {
+
+    console.log('111111111111111111111',createOrderDto);
+    
     // 1. فحص هل نوع السيارة موجود مسبقاً في CarType
     // نستخدم carModel من الـ dto لمقارنتها بحقل name في CarType
     let carType = await this.carTypeModel.findOne({
-      carModel: createOrderDto.carModel.trim(),
+      carModel: createOrderDto.carModel,
     });
+
+
+    console.log('222222222222222222',carType);
 
     if (!carType) {
       // 2. إذا لم تكن موجودة، نقوم بإنشائها
       carType = await this.carTypeModel.create({
-        name: createOrderDto.carModel.trim(),
+        carModel: createOrderDto.carModel,
         manufacturer: createOrderDto.carManufacturer,
         size: createOrderDto.carSize, // التأكد من تطابق الـ Enum
       });
