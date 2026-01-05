@@ -5,9 +5,10 @@ import { AssignEmployeesDto } from './dto/assign-employees.dto';
 import { JwtAuthAdminGuard } from 'src/common/guards/jwtAuthAdminGuard';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { AdminRoles } from 'src/common/enum/adminRoles.enum';
+import { AuthCompositeGuard } from 'src/common/guards/AuthCompositeGuard';
 
 @Controller('admin/work-orders')
-@UseGuards(JwtAuthAdminGuard)
+@UseGuards(AuthCompositeGuard)
 export class WorkOrderController {
   constructor(private readonly service: WorkOrderService) {}
 

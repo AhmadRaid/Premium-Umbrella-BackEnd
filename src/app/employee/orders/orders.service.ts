@@ -132,9 +132,6 @@ export class OrdersEmployeeService {
       carModel: createOrderDto.carModel,
     });
 
-
-    console.log('222222222222222222',carType);
-
     if (!carType) {
       // 2. إذا لم تكن موجودة، نقوم بإنشائها
       carType = await this.carTypeModel.create({
