@@ -26,7 +26,7 @@ export class OfferPricesEmployeeService {
   async findAll(): Promise<OfferPrices[]> {
     return this.offerPriceModel
       .find({ isDeleted: false })
-      .populate('client', '_id firstName secondName thirdName lastName clientNumber')
+      .populate('client', '_id firstName secondName thirdName lastName clientNumber phone')
       .exec();
   }
 
