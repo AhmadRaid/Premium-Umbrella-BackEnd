@@ -25,28 +25,28 @@ export class VoucherController {
         return this.voucherService.getStatistics(req.user.branchId);
     }
 
-    @Get(':vouchersId')
-    findOne(@Param('vouchersId') vouchersId: string, @Request() req: AuthRequest) {
-        return this.voucherService.findOne(vouchersId, req.user.branchId);
+    @Get(':voucherId')
+    findOne(@Param('voucherId') voucherId: string, @Request() req: AuthRequest) {
+        return this.voucherService.findOne(voucherId, req.user.branchId);
     }
 
-    @Patch(':vouchersId')
-    update(@Param('vouchersId') vouchersId: string, @Body() updateVoucherDto: UpdateVoucherDto, @Request() req: AuthRequest) {
-        return this.voucherService.update(vouchersId, updateVoucherDto, req.user.branchId);
+    @Patch(':voucherId')
+    update(@Param('voucherId') voucherId: string, @Body() updateVoucherDto: UpdateVoucherDto, @Request() req: AuthRequest) {
+        return this.voucherService.update(voucherId, updateVoucherDto, req.user.branchId);
     }
 
-    @Delete(':vouchersId')
-    remove(@Param('vouchersId') vouchersId: string, @Request() req: AuthRequest) {
-        return this.voucherService.remove(vouchersId, req.user.branchId);
+    @Delete(':voucherId')
+    remove(@Param('voucherId') voucherId: string, @Request() req: AuthRequest) {
+        return this.voucherService.remove(voucherId, req.user.branchId);
     }
 
-    @Post(':vouchersId/approve')
-    approve(@Param('vouchersId') vouchersId: string, @Body() approveDto: ApproveVoucherDto, @Request() req: AuthRequest) {
-        return this.voucherService.approve(vouchersId, approveDto, req.user.branchId);
+    @Post(':voucherId/approve')
+    approve(@Param('voucherId') voucherId: string, @Body() approveDto: ApproveVoucherDto, @Request() req: AuthRequest) {
+        return this.voucherService.approve(voucherId, approveDto, req.user.branchId);
     }
 
-    @Post(':vouchersId/reject')
-    reject(@Param('vouchersId') vouchersId: string, @Body() rejectDto: RejectVoucherDto, @Request() req: AuthRequest) {
-        return this.voucherService.reject(vouchersId, rejectDto, req.user.branchId);
+    @Post(':voucherId/reject')
+    reject(@Param('voucherId') voucherId: string, @Body() rejectDto: RejectVoucherDto, @Request() req: AuthRequest) {
+        return this.voucherService.reject(voucherId, rejectDto, req.user.branchId);
     }
 }

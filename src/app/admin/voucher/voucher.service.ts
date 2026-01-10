@@ -37,11 +37,13 @@ export class VoucherService {
     }
 
     // الحصول على سند محدد
-    async findOne(id: string, branchId: string): Promise<Voucher> {
+    async findOne(voucherId: string, branchId: string): Promise<Voucher> {
+        console.log();
+        
         return await this.voucherModel
             .findOne({
-                _id: id,
-                branchId: new Types.ObjectId(branchId),
+                _id: new Types.ObjectId(voucherId),
+                // branchId: new Types.ObjectId(branchId),
                 isDeleted: false
             })
             .populate('clientId', 'firstName lastName phone email')
