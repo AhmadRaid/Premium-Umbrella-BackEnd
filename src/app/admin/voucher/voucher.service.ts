@@ -129,14 +129,14 @@ export class VoucherService {
           //  branchId: new Types.ObjectId(branchId),
             type: 'PAYMENT',
             isDeleted: false,
-            status: 'APPROVED'
+        //    status: 'APPROVED'
         });
 
         const receipts = await this.voucherModel.find({
           //  branchId: new Types.ObjectId(branchId),
             type: 'RECEIPT',
             isDeleted: false,
-            status: 'APPROVED'
+        //    status: 'APPROVED'
         });
 
         const totalPayments = payments.reduce((sum, voucher) => sum + voucher.amount, 0);
