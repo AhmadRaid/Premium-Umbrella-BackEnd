@@ -69,8 +69,8 @@ export class VoucherService {
     async update(id: string, updateVoucherDto: UpdateVoucherDto, branchId: string): Promise<Voucher> {
         return await this.voucherModel.findOneAndUpdate(
             {
-                _id: id,
-                branchId: new Types.ObjectId(branchId),
+                _id: new Types.ObjectId(id),
+            //    branchId: new Types.ObjectId(branchId),
                 isDeleted: false
             },
             updateVoucherDto,
@@ -82,8 +82,8 @@ export class VoucherService {
     async remove(id: string, branchId: string): Promise<void> {
         await this.voucherModel.findOneAndUpdate(
             {
-                _id: id,
-                branchId: new Types.ObjectId(branchId),
+                _id: new Types.ObjectId(id),
+            //    branchId: new Types.ObjectId(branchId),
                 isDeleted: false
             },
             {
