@@ -24,12 +24,26 @@ export class VoucherService {
     }
 
     // الحصول على جميع السندات
-    async findAll(branchId: string): Promise<Voucher[]> {
+    async findAll(branchId: string, voucherNumber?: string, type?: string): Promise<Voucher[]> {
+        const query: any = {
+            isDeleted: false
+        };
+
+        if (branchId) {
+            query.branchId = new Types.ObjectId(branchId);
+        }
+
+        if (voucherNumber) {
+            // partial, case-insensitive match for voucher number (e.g., "VOU-1004" or partial input)
+            query.voucherNumber = { $regex: voucherNumber, $options: 'i' };
+        }
+
+        if (type === 'PAYMENT' || type === 'RECEIPT') {
+            query.type = type;
+        }
+
         return await this.voucherModel
-            .find({
-                // branchId: new Types.ObjectId(branchId),
-                isDeleted: false
-            })
+            .find(query)
             .populate('clientId', 'firstName lastName phone')
             .populate('createdBy', 'fullName')
             .sort({ createdAt: -1 })

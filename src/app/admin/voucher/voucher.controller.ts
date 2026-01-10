@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Query } from '@nestjs/common';
 import { VoucherService } from './voucher.service';
 import { CreateVoucherDto } from './dto/create-voucher.dto';
 import { UpdateVoucherDto, ApproveVoucherDto, RejectVoucherDto } from './dto/update-voucher.dto';
@@ -16,8 +16,8 @@ export class VoucherController {
     }
 
     @Get()
-    findAll(@Request() req: AuthRequest) {
-        return this.voucherService.findAll(req.user.branchId);
+    findAll(@Query('voucherNumber') voucherNumber: string, @Query('type') type: string, @Request() req: AuthRequest) {
+        return this.voucherService.findAll(req.user.branchId, voucherNumber, type);
     }
 
     @Get('statistics')
