@@ -10,7 +10,8 @@ export interface AuthRequest extends Request {
   user: {
     _id?: string,
     role:string,
-    branch:string
+    branch:string,
+    branchId:string
   };
   lang: string
 }
